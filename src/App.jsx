@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import fotoFelda from "./assets/felda.png";
 
 // Resume data populated with Felda's info (from earlier)
 const resume = {
@@ -46,7 +47,11 @@ const jsonLd = {
   address: { "@type": "PostalAddress", addressLocality: resume.contact.location },
 };
 
+
 export default function App() {
+  const [openCv, setOpenCv] = useState(false);
+  const pdfUrl = "/resume.pdf";
+
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900">
       <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
@@ -73,15 +78,23 @@ export default function App() {
             <p className="text-lg text-gray-700 mb-4">{resume.title}</p>
             <p className="text-gray-700 mb-6">{resume.summary}</p>
             <div className="flex gap-4">
-              <a href="#resume" className="inline-block px-5 py-3 bg-indigo-600 text-white rounded-lg">Lihat CV</a>
+              <button
+                onClick={() => setOpenCv(true)}
+                className="inline-block px-5 py-3 bg-indigo-600 text-white rounded-lg"
+              >
+                Lihat CV
+              </button>
               <a href={resume.contact.github} target="_blank" rel="noreferrer" className="inline-block px-5 py-3 border rounded-lg">GitHub</a>
             </div>
           </div>
 
-          <div className="flex justify-center md:justify-end">
-            <div className="w-56 h-56 bg-gradient-to-br from-indigo-100 to-indigo-300 rounded-xl flex items-center justify-center print:hidden">
-              <span className="text-indigo-800 font-medium">Foto Felda</span>
-            </div>
+          <div className="flex md:justify-end">
+            <img
+              src={fotoFelda}
+              alt="Foto Felda Ega Fadhila"
+              className="w-80 h-64 rounded-xl object-cover object-top shadow-lg print:hidden"
+              loading="lazy"
+            />
           </div>
         </section>
 
@@ -221,6 +234,64 @@ export default function App() {
           © {new Date().getFullYear()} {resume.name} — Built with React + Tailwind
         </footer>
       </main>
+
+{/* Modal CV Preview */}
+{openCv && (
+  <div
+    className="fixed inset-0 z-50 flex items-center justify-center p-4"
+    role="dialog"
+    aria-modal="true"
+  >
+    {/* Background */}
+    <div
+      className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+      onClick={() => setOpenCv(false)}
+    />
+
+    {/* Modal Box */}
+    <div className="relative z-10 w-full max-w-5xl h-[80vh] bg-white rounded-xl shadow-lg overflow-hidden">
+      {/* Header */}
+      <div className="flex items-center justify-between p-3 border-b bg-gray-50">
+        <h3 className="text-lg font-semibold">Preview CV</h3>
+
+        <div className="flex gap-2">
+          <a
+            href={pdfUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-3 py-1 border rounded hover:bg-gray-100 text-sm"
+          >
+            Buka di Tab Baru
+          </a>
+
+          <a
+            href={pdfUrl}
+            download
+            className="px-3 py-1 border rounded hover:bg-gray-100 text-sm"
+          >
+            Download
+          </a>
+
+          <button
+            onClick={() => setOpenCv(false)}
+            className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 text-sm"
+          >
+            Tutup
+          </button>
+        </div>
+      </div>
+
+      {/* Isi PDF */}
+      <iframe
+        src={pdfUrl}
+        className="w-full h-full"
+        frameBorder="0"
+        title="CV Preview"
+      />
+    </div>
+  </div>
+)}
+
 
       {/* Print styles (simple) */}
       <style>{`@media print { body { -webkit-print-color-adjust: exact; } .print\:hidden { display: none !important; } }`}</style>
