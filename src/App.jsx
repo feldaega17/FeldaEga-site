@@ -9,12 +9,12 @@ const resume = {
     "I’m a third-year Informatics Engineering student at Sepuluh Nopember Institute of Technology (ITS) with a strong focus on Data Science and Artificial Intelligence. I’m passionate about turning data into actionable insights by applying machine learning, data analytics, and problem-solving to real-world challenges. I enjoy collaborating in teams, taking ownership of projects, and continuously improving through hands-on experience in technology communities and organizational roles.",
   contact: {
     email: "feldaega17@email.com",
-    phone: "+62 812-3456-7890",
+    phone: "+62 822-3541-9215",
     location: "Surabaya, Indonesia",
     linkedin: "https://linkedin.com/in/feldaega",
     github: "https://github.com/feldaega17",
   },
-  skills: ["React", "JavaScript", "Tailwind CSS", "Node.js", "Python", "C++", "Git"],
+  skills: ["ReactJS", "Tableau", "Nest.js", "Python", "C++", "Git"],
   experience: [
     {
       role: "Frontend Intern",
@@ -24,14 +24,14 @@ const resume = {
     },
   ],
   education: [
-    { school: "ITS - Teknik Informatika", period: "2023 - sekarang", details: "IPK: <3.5 (update sendiri)" },
+    { school: "Institut Teknologi Sepuluh Nopember - S1 Teknik Informatika", period: "2023 - sekarang" },
   ],
   certifications: ["Google IT Support Professional Certificate", "Meta Front-End Developer Certificate", "AWS Cloud Practitioner"],
   languages: ["Indonesia (Native)", "English (Intermediate)"],
   projects: [
     { name: "Data Mining Project", desc: "Analisis dataset credit card fraud detection menggunakan machine learning.", link: "#" },
     { name: "Portfolio Website", desc: "Personal website dengan React dan Tailwind CSS.", link: "#" },
-    { name: "Operations Research", desc: "Implementasi algoritma optimasi RBSM dalam C++.", link: "#" },
+    { name: "Manajemen Resiko Level 1", desc: "Implementasi sistem manajemen risiko untuk level 1 menggunakan pendekatan kuantitatif.", link: "#" },
   ],
 };
 
@@ -231,7 +231,7 @@ export default function App() {
         </section>
 
         <footer className="mt-12 py-6 text-center text-sm text-gray-500">
-          © {new Date().getFullYear()} {resume.name} — Built with React + Tailwind
+          © {new Date().getFullYear()} {resume.name} — Built with ReactJS + Tailwind
         </footer>
       </main>
 
