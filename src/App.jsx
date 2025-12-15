@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import fotoFelda from "./assets/felda.png";
 
-// Resume data populated with Felda's info (from earlier)
+// Resume data populated with Felda's info
 const resume = {
   name: "Felda Ega Fadhila",
-  title: "Data and AI Enthusiast | Data Analyst",
+  title: "Data & AI Enthusiast | Data Analyst",
   summary:
-    "I’m a third-year Informatics Engineering student at Sepuluh Nopember Institute of Technology (ITS) with a strong focus on Data Science and Artificial Intelligence. I’m passionate about turning data into actionable insights by applying machine learning, data analytics, and problem-solving to real-world challenges. I enjoy collaborating in teams, taking ownership of projects, and continuously improving through hands-on experience in technology communities and organizational roles.",
+    "I am a third-year Informatics Engineering student at Sepuluh Nopember Institute of Technology (ITS) with a strong focus on Data Science and Artificial Intelligence. I am passionate about transforming data into actionable insights through machine learning, data analytics, and structured problem-solving. I enjoy collaborating in teams, taking ownership of projects, and continuously improving through hands-on experience in technology communities and organizational roles.",
   contact: {
     email: "feldaega17@email.com",
     phone: "+62 822-3541-9215",
@@ -14,28 +14,49 @@ const resume = {
     linkedin: "https://linkedin.com/in/feldaega",
     github: "https://github.com/feldaega17",
   },
-  skills: ["ReactJS", "Tableau", "Nest.js", "Python", "C++", "Git"],
+  skills: ["ReactJS", "Tableau", "NestJS", "Python", "C++", "Git"],
   experience: [
     {
-      role: "Frontend Intern",
-      company: "Perusahaan A",
-      period: "Jun 2024 - Sep 2024",
-      details: "Membangun komponen UI, mengintegrasikan API, meningkatkan performa bundle.",
+      role: "Vice Head of Organizational Development Division",
+      company: "Generasi Baru Indonesia Komisariat Institut Teknologi Sepuluh Nopember",
+      period: "Sept 2025 – Present",
     },
   ],
   education: [
-    { school: "Institut Teknologi Sepuluh Nopember - S1 Teknik Informatika", period: "2023 - sekarang" },
+    {
+      school:
+        "Sepuluh Nopember Institute of Technology (ITS) – B.Sc. in Informatics Engineering",
+      period: "2023 – Present",
+    },
   ],
-  certifications: ["Google IT Support Professional Certificate", "Meta Front-End Developer Certificate", "AWS Cloud Practitioner"],
-  languages: ["Indonesia (Native)", "English (Intermediate)"],
+  certifications: [
+    "Google IT Support Professional Certificate",
+    "Meta Front-End Developer Certificate",
+    "Risk Management Level 1 Certification",
+  ],
+  languages: ["Indonesian (Native)", "English (Intermediate)"],
   projects: [
-    { name: "Data Mining Project", desc: "Analisis dataset credit card fraud detection menggunakan machine learning.", link: "#" },
-    { name: "Portfolio Website", desc: "Personal website dengan React dan Tailwind CSS.", link: "#" },
-    { name: "Manajemen Resiko Level 1", desc: "Implementasi sistem manajemen risiko untuk level 1 menggunakan pendekatan kuantitatif.", link: "#" },
+    {
+      name: "Data Mining Project",
+      desc:
+        "Credit card fraud detection analysis using machine learning techniques.",
+      link: "#",
+    },
+    {
+      name: "Portfolio Website",
+      desc: "Personal portfolio website built with React and Tailwind CSS.",
+      link: "#",
+    },
+    {
+      name: "Risk Management Level 1",
+      desc:
+        "Implementation of a level-1 risk management system using a quantitative approach.",
+      link: "#",
+    },
   ],
 };
 
-// JSON-LD for resume (improves search engine understanding)
+// JSON-LD for SEO
 const jsonLd = {
   "@context": "http://schema.org",
   "@type": "Person",
@@ -44,9 +65,11 @@ const jsonLd = {
   email: resume.contact.email,
   telephone: resume.contact.phone,
   url: resume.contact.linkedin,
-  address: { "@type": "PostalAddress", addressLocality: resume.contact.location },
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: resume.contact.location,
+  },
 };
-
 
 export default function App() {
   const [openCv, setOpenCv] = useState(false);
@@ -58,23 +81,32 @@ export default function App() {
 
       <header className="bg-white shadow-sm sticky top-0 z-40">
         <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
-          <a href="#home" className="font-semibold text-xl">{resume.name}</a>
+          <a href="#home" className="font-semibold text-xl">
+            {resume.name}
+          </a>
           <nav className="hidden md:flex gap-6 text-sm">
             <a href="#projects" className="hover:underline">Projects</a>
             <a href="#resume" className="hover:underline">Resume</a>
             <a href="#about" className="hover:underline">About</a>
             <a href="#contact" className="hover:underline">Contact</a>
-            <a href="/resume.pdf" className="px-3 py-1 border rounded">Download CV</a>
+            <a href="/resume.pdf" className="px-3 py-1 border rounded">
+              Download CV
+            </a>
           </nav>
           <button className="md:hidden p-2 rounded-md border">Menu</button>
         </div>
       </header>
 
       <main className="max-w-5xl mx-auto px-4 py-8">
-        {/* Hero */}
-        <section id="home" className="grid md:grid-cols-2 gap-8 items-center py-8">
+        {/* Hero Section */}
+        <section
+          id="home"
+          className="grid md:grid-cols-2 gap-8 items-center py-8"
+        >
           <div>
-            <h1 className="text-4xl md:text-5xl font-extrabold mb-2">Hai, saya <span className="text-indigo-600">{resume.name}</span></h1>
+            <h1 className="text-4xl md:text-5xl font-extrabold mb-2">
+              Hi, I'm <span className="text-indigo-600">{resume.name}</span>
+            </h1>
             <p className="text-lg text-gray-700 mb-4">{resume.title}</p>
             <p className="text-gray-700 mb-6">{resume.summary}</p>
             <div className="flex gap-4">
@@ -82,46 +114,81 @@ export default function App() {
                 onClick={() => setOpenCv(true)}
                 className="inline-block px-5 py-3 bg-indigo-600 text-white rounded-lg"
               >
-                Lihat CV
+                View CV
               </button>
-              <a href={resume.contact.github} target="_blank" rel="noreferrer" className="inline-block px-5 py-3 border rounded-lg">GitHub</a>
+              <a
+                href={resume.contact.github}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-block px-5 py-3 border rounded-lg"
+              >
+                GitHub
+              </a>
             </div>
           </div>
 
           <div className="flex md:justify-end">
             <img
               src={fotoFelda}
-              alt="Foto Felda Ega Fadhila"
+              alt="Felda Ega Fadhila"
               className="w-80 h-64 rounded-xl object-cover object-top shadow-lg print:hidden"
               loading="lazy"
             />
           </div>
         </section>
 
-        {/* Resume / CV */}
+        {/* Resume Section */}
         <section id="resume" className="mt-8 bg-white rounded-xl shadow p-6">
           <div className="flex items-start justify-between">
             <div>
               <h2 className="text-2xl font-bold">Resume</h2>
-              <p className="text-sm text-gray-600">Ringkasan pengalaman, skill, dan kontak untuk keperluan kerja atau magang.</p>
+              <p className="text-sm text-gray-600">
+                A summary of experience, skills, and contact information for
+                professional opportunities.
+              </p>
             </div>
             <div className="flex gap-2">
-              <a href="/resume.pdf" className="px-3 py-2 border rounded">Download PDF</a>
-              <button onClick={() => window.print()} className="px-3 py-2 bg-indigo-600 text-white rounded">Cetak</button>
+              <a href="/resume.pdf" className="px-3 py-2 border rounded">
+                Download PDF
+              </a>
+              <button
+                onClick={() => window.print()}
+                className="px-3 py-2 bg-indigo-600 text-white rounded"
+              >
+                Print
+              </button>
             </div>
           </div>
 
           <div className="mt-6 grid md:grid-cols-3 gap-6">
-            {/* Left column: contact, skills */}
+            {/* Sidebar */}
             <aside className="space-y-4 md:col-span-1">
               <div>
-                <h3 className="font-semibold">Kontak</h3>
+                <h3 className="font-semibold">Contact</h3>
                 <ul className="text-sm text-gray-700 mt-2 space-y-1">
-                  <li>Email: <a href={`mailto:${resume.contact.email}`} className="text-indigo-600">{resume.contact.email}</a></li>
+                  <li>
+                    Email:{" "}
+                    <a
+                      href={`mailto:${resume.contact.email}`}
+                      className="text-indigo-600"
+                    >
+                      {resume.contact.email}
+                    </a>
+                  </li>
                   <li>Phone: {resume.contact.phone}</li>
-                  <li>Lokasi: {resume.contact.location}</li>
-                  <li>LinkedIn: <a href={resume.contact.linkedin} className="text-indigo-600">LinkedIn</a></li>
-                  <li>GitHub: <a href={resume.contact.github} className="text-indigo-600">GitHub</a></li>
+                  <li>Location: {resume.contact.location}</li>
+                  <li>
+                    LinkedIn:{" "}
+                    <a href={resume.contact.linkedin} className="text-indigo-600">
+                      LinkedIn
+                    </a>
+                  </li>
+                  <li>
+                    GitHub:{" "}
+                    <a href={resume.contact.github} className="text-indigo-600">
+                      GitHub
+                    </a>
+                  </li>
                 </ul>
               </div>
 
@@ -129,13 +196,18 @@ export default function App() {
                 <h3 className="font-semibold">Skills</h3>
                 <ul className="mt-2 flex flex-wrap gap-2">
                   {resume.skills.map((s) => (
-                    <li key={s} className="text-xs border px-2 py-1 rounded">{s}</li>
+                    <li
+                      key={s}
+                      className="text-xs border px-2 py-1 rounded"
+                    >
+                      {s}
+                    </li>
                   ))}
                 </ul>
               </div>
 
               <div>
-                <h3 className="font-semibold mt-2">Bahasa</h3>
+                <h3 className="font-semibold mt-2">Languages</h3>
                 <ul className="text-sm text-gray-700 mt-2">
                   {resume.languages.map((l) => (
                     <li key={l}>{l}</li>
@@ -144,43 +216,50 @@ export default function App() {
               </div>
             </aside>
 
-            {/* Main column: experience, education */}
+            {/* Main Content */}
             <div className="md:col-span-2 space-y-6">
               <div>
-                <h3 className="font-semibold">Pengalaman Kerja</h3>
+                <h3 className="font-semibold">Organizational Experience</h3>
                 <div className="mt-3 space-y-4">
                   {resume.experience.map((e) => (
-                    <div key={e.role} className="">
+                    <div key={e.role}>
                       <div className="flex items-center justify-between">
-                        <h4 className="font-medium">{e.role} — {e.company}</h4>
-                        <span className="text-sm text-gray-500">{e.period}</span>
+                        <h4 className="font-medium">
+                          {e.role} — {e.company}
+                        </h4>
+                        <span className="text-sm text-gray-500">
+                          {e.period}
+                        </span>
                       </div>
-                      <p className="text-sm text-gray-700 mt-1">{e.details}</p>
+                      <p className="text-sm text-gray-700 mt-1">
+                        {e.details}
+                      </p>
                     </div>
                   ))}
                 </div>
               </div>
 
               <div>
-                <h3 className="font-semibold">Pendidikan</h3>
+                <h3 className="font-semibold">Education</h3>
                 <div className="mt-3 space-y-3">
                   {resume.education.map((ed) => (
                     <div key={ed.school}>
                       <div className="flex items-center justify-between">
                         <h4 className="font-medium">{ed.school}</h4>
-                        <span className="text-sm text-gray-500">{ed.period}</span>
+                        <span className="text-sm text-gray-500">
+                          {ed.period}
+                        </span>
                       </div>
-                      <p className="text-sm text-gray-700 mt-1">{ed.details}</p>
                     </div>
                   ))}
                 </div>
               </div>
 
               <div>
-                <h3 className="font-semibold">Sertifikasi & Projek</h3>
+                <h3 className="font-semibold">Certifications & Projects</h3>
                 <div className="mt-3 text-sm text-gray-700 space-y-2">
                   <div>
-                    <strong>Sertifikasi:</strong>
+                    <strong>Certifications:</strong>
                     <ul className="list-disc list-inside">
                       {resume.certifications.map((c) => (
                         <li key={c}>{c}</li>
@@ -189,10 +268,15 @@ export default function App() {
                   </div>
 
                   <div className="mt-2">
-                    <strong>Project:</strong>
+                    <strong>Projects:</strong>
                     <ul className="list-disc list-inside">
                       {resume.projects.map((p) => (
-                        <li key={p.name}><a href={p.link} className="text-indigo-600">{p.name}</a> — {p.desc}</li>
+                        <li key={p.name}>
+                          <a href={p.link} className="text-indigo-600">
+                            {p.name}
+                          </a>{" "}
+                          — {p.desc}
+                        </li>
                       ))}
                     </ul>
                   </div>
@@ -202,99 +286,114 @@ export default function App() {
           </div>
         </section>
 
-        {/* Projects & About (kept minimal) */}
+        {/* Projects Section */}
         <section id="projects" className="mt-8">
           <h2 className="text-2xl font-bold mb-3">Projects</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {resume.projects.map((p) => (
-              <article key={p.name} className="bg-white rounded-xl shadow p-4 hover:shadow-lg transition">
+              <article
+                key={p.name}
+                className="bg-white rounded-xl shadow p-4 hover:shadow-lg transition"
+              >
                 <h3 className="font-semibold text-lg">{p.name}</h3>
                 <p className="text-sm text-gray-600 mt-2">{p.desc}</p>
                 <div className="mt-4 flex items-center justify-between">
-                  <a href={p.link} className="text-indigo-600 text-sm">Lihat</a>
-                  <span className="text-xs text-gray-400">React • Tailwind</span>
+                  <a href={p.link} className="text-indigo-600 text-sm">
+                    View Project
+                  </a>
+                  <span className="text-xs text-gray-400">
+                    React • Tailwind
+                  </span>
                 </div>
               </article>
             ))}
           </div>
         </section>
 
+        {/* Contact Section */}
         <section id="contact" className="mt-8">
           <div className="bg-white rounded-xl shadow p-6">
-            <h3 className="text-lg font-semibold mb-4">Hubungi</h3>
-            <p className="text-sm text-gray-600">Tertarik bekerja sama? Kirim email atau hubungi nomor yang tersedia.</p>
+            <h3 className="text-lg font-semibold mb-4">Get in Touch</h3>
+            <p className="text-sm text-gray-600">
+              Interested in collaborating or working together? Feel free to
+              reach out via email or LinkedIn.
+            </p>
             <ul className="mt-3 text-sm">
-              <li>Email: <a href={`mailto:${resume.contact.email}`} className="text-indigo-600">{resume.contact.email}</a></li>
-              <li>LinkedIn: <a href={resume.contact.linkedin} className="text-indigo-600">{resume.contact.linkedin}</a></li>
+              <li>
+                Email:{" "}
+                <a
+                  href={`mailto:${resume.contact.email}`}
+                  className="text-indigo-600"
+                >
+                  {resume.contact.email}
+                </a>
+              </li>
+              <li>
+                LinkedIn:{" "}
+                <a href={resume.contact.linkedin} className="text-indigo-600">
+                  {resume.contact.linkedin}
+                </a>
+              </li>
             </ul>
           </div>
         </section>
 
         <footer className="mt-12 py-6 text-center text-sm text-gray-500">
-          © {new Date().getFullYear()} {resume.name} — Built with ReactJS + Tailwind
+          © {new Date().getFullYear()} {resume.name} — Built with React & Tailwind
         </footer>
       </main>
 
-{/* Modal CV Preview */}
-{openCv && (
-  <div
-    className="fixed inset-0 z-50 flex items-center justify-center p-4"
-    role="dialog"
-    aria-modal="true"
-  >
-    {/* Background */}
-    <div
-      className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-      onClick={() => setOpenCv(false)}
-    />
-
-    {/* Modal Box */}
-    <div className="relative z-10 w-full max-w-5xl h-[80vh] bg-white rounded-xl shadow-lg overflow-hidden">
-      {/* Header */}
-      <div className="flex items-center justify-between p-3 border-b bg-gray-50">
-        <h3 className="text-lg font-semibold">Preview CV</h3>
-
-        <div className="flex gap-2">
-          <a
-            href={pdfUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-3 py-1 border rounded hover:bg-gray-100 text-sm"
-          >
-            Buka di Tab Baru
-          </a>
-
-          <a
-            href={pdfUrl}
-            download
-            className="px-3 py-1 border rounded hover:bg-gray-100 text-sm"
-          >
-            Download
-          </a>
-
-          <button
+      {/* CV Modal */}
+      {openCv && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          role="dialog"
+          aria-modal="true"
+        >
+          <div
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
             onClick={() => setOpenCv(false)}
-            className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 text-sm"
-          >
-            Tutup
-          </button>
+          />
+
+          <div className="relative z-10 w-full max-w-5xl h-[80vh] bg-white rounded-xl shadow-lg overflow-hidden">
+            <div className="flex items-center justify-between p-3 border-b bg-gray-50">
+              <h3 className="text-lg font-semibold">CV Preview</h3>
+              <div className="flex gap-2">
+                <a
+                  href={pdfUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3 py-1 border rounded text-sm"
+                >
+                  Open in New Tab
+                </a>
+                <a
+                  href={pdfUrl}
+                  download
+                  className="px-3 py-1 border rounded text-sm"
+                >
+                  Download
+                </a>
+                <button
+                  onClick={() => setOpenCv(false)}
+                  className="px-3 py-1 bg-gray-200 rounded text-sm"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+
+            <iframe
+              src={pdfUrl}
+              className="w-full h-full"
+              frameBorder="0"
+              title="CV Preview"
+            />
+          </div>
         </div>
-      </div>
+      )}
 
-      {/* Isi PDF */}
-      <iframe
-        src={pdfUrl}
-        className="w-full h-full"
-        frameBorder="0"
-        title="CV Preview"
-      />
-    </div>
-  </div>
-)}
-
-
-      {/* Print styles (simple) */}
-      <style>{`@media print { body { -webkit-print-color-adjust: exact; } .print\:hidden { display: none !important; } }`}</style>
+      <style>{`@media print { body { -webkit-print-color-adjust: exact; } .print\\:hidden { display: none !important; } }`}</style>
     </div>
   );
 }
