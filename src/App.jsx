@@ -42,10 +42,9 @@ const resume = {
       link: "https://fp-frontend-two.vercel.app/" // ganti sesuai URL frontend deploy di Vercel
     },
     {
-      name: "Data Mining Project",
-      desc:
-        "Credit card fraud detection analysis using machine learning techniques.",
-      link: "#",
+      name: "Chest X-Ray AI Classifier",
+      desc: "A deep learning web app that classifies chest X-ray images into Atelectasis, Effusion, and Infiltration. Built with TensorFlow and deployed on Hugging Face Spaces for interactive use.",
+      link: "https://huggingface.co/spaces/feldaega17/xray-classifier-space"
     },
     {
       name: "Portfolio Website",
