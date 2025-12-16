@@ -37,6 +37,11 @@ const resume = {
   languages: ["Indonesian (Native)", "English (Intermediate)"],
   projects: [
     {
+      name: "Task Manager Application",
+      desc: "A complete task management application with NestJS backend (TypeORM + SQLite) and React frontend, featuring authentication, task categorization, and reminders.",
+      link: "https://fp-frontend-two.vercel.app/" // ganti sesuai URL frontend deploy di Vercel
+    },
+    {
       name: "Data Mining Project",
       desc:
         "Credit card fraud detection analysis using machine learning techniques.",
@@ -45,12 +50,6 @@ const resume = {
     {
       name: "Portfolio Website",
       desc: "Personal portfolio website built with React and Tailwind CSS.",
-      link: "#",
-    },
-    {
-      name: "Risk Management Level 1",
-      desc:
-        "Implementation of a level-1 risk management system using a quantitative approach.",
       link: "#",
     },
   ],
