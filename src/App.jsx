@@ -299,9 +299,6 @@ export default function App() {
                   <a href={p.link} className="text-indigo-600 text-sm">
                     View Project
                   </a>
-                  <span className="text-xs text-gray-400">
-                    React • Tailwind
-                  </span>
                 </div>
               </article>
             ))}
