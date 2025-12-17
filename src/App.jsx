@@ -25,7 +25,7 @@ const resume = {
   education: [
     {
       school:
-        "Sepuluh Nopember Institute of Technology (ITS) – B.Sc. in Informatics Engineering",
+        "Sepuluh Nopember Institute of Technology (ITS) – Bachelor’s Degree in Informatics Engineering",
       period: "2023 – Present",
     },
   ],
