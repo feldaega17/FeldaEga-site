@@ -5,12 +5,13 @@
             "use": "@vercel/static-build",
             "config": {
                 "distDir": "dist"
-            }
+            },
+            "buildCommand": "npm run build"
         }
     ],
     "rewrites": [
         {
-            "source": "/(.*)",
+            "source": "/((?!.*\\.).*)",
             "destination": "/index.html"
         }
     ]
