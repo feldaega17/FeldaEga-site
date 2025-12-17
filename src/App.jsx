@@ -47,9 +47,9 @@ const resume = {
       link: "https://huggingface.co/spaces/feldaega17/xray-classifier-space"
     },
     {
-      name: "Portfolio Website",
-      desc: "Personal portfolio website built with React and Tailwind CSS.",
-      link: "#",
+      name: "Credit Card Fraud Detection Web App",
+      desc: "An interactive web application for real-time credit card fraud detection using multiple machine learning models and ensemble prediction.",
+      link: "https://fraud.up.railway.app/model.html",
     },
   ],
 };
