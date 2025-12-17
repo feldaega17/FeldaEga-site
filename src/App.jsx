@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import fotoFelda from "./assets/felda.png";
 
 // Resume data populated with Felda's info
@@ -72,6 +72,29 @@ const jsonLd = {
 export default function App() {
   const [openCv, setOpenCv] = useState(false);
   const pdfUrl = "/resume.pdf";
+
+  useEffect(() => {
+    const href = "/logo-site.png?v=" + Date.now();
+    const setLink = (rel) => {
+      let link = document.querySelector(`link[rel="${rel}"]`);
+      if (!link) {
+        link = document.createElement("link");
+        link.rel = rel;
+        link.type = "image/png";
+        document.head.appendChild(link);
+      }
+      link.href = href;
+    };
+    setLink("icon");
+    setLink("shortcut icon");
+    let apple = document.querySelector('link[rel="apple-touch-icon"]');
+    if (!apple) {
+      apple = document.createElement("link");
+      apple.rel = "apple-touch-icon";
+      document.head.appendChild(apple);
+    }
+    apple.href = href;
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900">
@@ -217,6 +240,22 @@ export default function App() {
             {/* Main Content */}
             <div className="md:col-span-2 space-y-6">
               <div>
+                <h3 className="font-semibold">Education</h3>
+                <div className="mt-3 space-y-3">
+                  {resume.education.map((ed) => (
+                    <div key={ed.school}>
+                      <div className="flex items-center justify-between">
+                        <h4 className="font-medium">{ed.school}</h4>
+                        <span className="text-sm text-gray-500">
+                          {ed.period}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div>
                 <h3 className="font-semibold">Organizational Experience</h3>
                 <div className="mt-3 space-y-4">
                   {resume.experience.map((e) => (
@@ -227,25 +266,6 @@ export default function App() {
                         </h4>
                         <span className="text-sm text-gray-500">
                           {e.period}
-                        </span>
-                      </div>
-                      <p className="text-sm text-gray-700 mt-1">
-                        {e.details}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <h3 className="font-semibold">Education</h3>
-                <div className="mt-3 space-y-3">
-                  {resume.education.map((ed) => (
-                    <div key={ed.school}>
-                      <div className="flex items-center justify-between">
-                        <h4 className="font-medium">{ed.school}</h4>
-                        <span className="text-sm text-gray-500">
-                          {ed.period}
                         </span>
                       </div>
                     </div>
