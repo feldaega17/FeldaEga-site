@@ -21,6 +21,21 @@ const resume = {
       company: "Generasi Baru Indonesia Komisariat Institut Teknologi Sepuluh Nopember",
       period: "Sept 2025 – Present",
     },
+    {
+      role: "Manager of Seminar Subdivision",
+      company: "Schematics ITS 2025 — Surabaya, Indonesia",
+      period: "Jan 2025 – Dec 2025",
+    },
+    {
+      role: "Internal Affairs Internship",
+      company: "Himpunan Mahasiswa Teknik Computer-Informatika ITS (HMTC) — Surabaya, Indonesia",
+      period: "Oct 2024 – Nov 2024",
+    },
+    {
+      role: "Staff of BST Division",
+      company: "Schematics ITS 2024 — Surabaya, Indonesia",
+      period: "Mar 2024 – Dec 2024",
+    },
   ],
   education: [
     {
