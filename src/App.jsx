@@ -307,17 +307,17 @@ export default function App() {
         {/* Projects Section */}
         <section id="projects" className="mt-8">
           <h2 className="text-2xl font-bold mb-3">Projects</h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory">
             {resume.projects.map((p) => (
               <article
                 key={p.name}
-                className="bg-white rounded-xl shadow p-4 hover:shadow-lg transition"
+                className="min-w-[280px] sm:min-w-[320px] bg-white rounded-xl shadow p-4 hover:shadow-lg transition snap-start"
               >
                 <h3 className="font-semibold text-lg">{p.name}</h3>
                 <p className="text-sm text-gray-600 mt-2">{p.desc}</p>
-                <div className="mt-4 flex items-center justify-between">
+                <div className="mt-4">
                   <a href={p.link} className="text-indigo-600 text-sm">
-                    View Project
+                    View Project →
                   </a>
                 </div>
               </article>
