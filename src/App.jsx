@@ -66,6 +66,11 @@ const resume = {
       desc: "An interactive web application for real-time credit card fraud detection using multiple machine learning models and ensemble prediction.",
       link: "https://fraud.up.railway.app/model.html",
     },
+    {
+      name: "Festival Budaya Nyepi — 3D Virtual Museum",
+      desc: "A 3D open-world virtual museum showcasing Indonesian cultural heritage. Features Ogoh-ogoh statues, ancient temple ruins, and an immersive Nyepi night atmosphere with fireflies, torches, and Balinese gamelan. Developed as a Computer Graphics final project, implementing 3D rendering, realistic lighting, particle systems, and performance optimization.",
+      link: "https://festival-nyepi.pages.dev",
+    },
   ],
 };
 
