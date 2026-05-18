@@ -135,7 +135,7 @@ function Hero() {
           {/* Available badge */}
           <div className="glass mono" style={{ alignSelf: "flex-start", display: "flex", alignItems: "center", gap: 8, padding: "6px 14px", borderRadius: 999, fontSize: 11, letterSpacing: ".1em", color: "#00D4FF" }}>
             <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#00D4FF", animation: "pulse-ring 2s ease-in-out infinite" }} />
-            Tersedia untuk kolaborasi baru
+            Available for new collaborations
           </div>
 
           {/* Headline */}
@@ -162,7 +162,7 @@ function Hero() {
               <span className="material-symbols-outlined" style={{ fontSize: 18 }}>arrow_forward</span>
             </a>
             <a href="#contact" className="btn-ghost glass glow">
-              Hubungi Saya
+              Contact Me
             </a>
           </div>
         </div>
@@ -208,7 +208,7 @@ function Projects() {
       <div className="container">
         <div style={{ marginBottom: 48 }}>
           <span className="section-label" style={{ color: "#9D4EDD" }}>// featured work</span>
-          <h2 className="section-heading">Proyek Pilihan</h2>
+          <h2 className="section-heading">Featured Projects</h2>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))", gap: 20 }}>
           {resume.projects.map((p) => {
@@ -227,17 +227,37 @@ function Projects() {
                 </div>
                 <div>
                   <h3 style={{ fontFamily: "'Geist','Inter',sans-serif", fontWeight: 700, fontSize: 17, letterSpacing: "-.02em", color: "#fff", marginBottom: 8 }}>{p.name}</h3>
+                  {p.period && (
+                    <p className="mono" style={{ fontSize: 11, color: "#6B7280", marginBottom: 8 }}>{p.period}</p>
+                  )}
                   <p style={{ fontSize: 14, lineHeight: 1.7, color: "#9B9B9B" }}>{p.desc}</p>
+                  {p.highlights?.length ? (
+                    <ul style={{ margin: "12px 0 0", paddingLeft: 18, fontSize: 12, lineHeight: 1.6, color: "#9B9B9B" }}>
+                      {p.highlights.map(h => (
+                        <li key={h}>{h}</li>
+                      ))}
+                    </ul>
+                  ) : null}
                 </div>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: "auto" }}>
-                  {p.tags.map((t, ti) => <span key={t} className={`chip ${ti % 2 === 0 ? "chip-blue" : "chip-purple"}`}>{t}</span>)}
+                <div style={{ marginTop: "auto", display: "flex", flexDirection: "column", gap: 12 }}>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                    {p.tags.map((t, ti) => <span key={t} className={`chip ${ti % 2 === 0 ? "chip-blue" : "chip-purple"}`}>{t}</span>)}
+                  </div>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
+                    <a href={p.link} target="_blank" rel="noreferrer" className="mono"
+                      style={{ fontSize: 12, letterSpacing: ".08em", color: c, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 4, transition: "gap .2s" }}
+                      onMouseEnter={e => e.currentTarget.style.gap = "10px"}
+                      onMouseLeave={e => e.currentTarget.style.gap = "4px"}>
+                      View Project <span className="material-symbols-outlined" style={{ fontSize: 16 }}>arrow_forward</span>
+                    </a>
+                    {p.repo && (
+                      <a href={p.repo} target="_blank" rel="noreferrer" className="mono"
+                        style={{ fontSize: 12, letterSpacing: ".08em", color: "#9D4EDD", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6 }}>
+                        GitHub <span className="material-symbols-outlined" style={{ fontSize: 16 }}>code</span>
+                      </a>
+                    )}
+                  </div>
                 </div>
-                <a href={p.link} target="_blank" rel="noreferrer" className="mono"
-                  style={{ fontSize: 12, letterSpacing: ".08em", color: c, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 4, transition: "gap .2s" }}
-                  onMouseEnter={e => e.currentTarget.style.gap = "10px"}
-                  onMouseLeave={e => e.currentTarget.style.gap = "4px"}>
-                  View Project <span className="material-symbols-outlined" style={{ fontSize: 16 }}>arrow_forward</span>
-                </a>
               </article>
             );
           })}
@@ -249,6 +269,22 @@ function Projects() {
 
 /* ── Experience + Stack ── */
 function Experience() {
+  const timelineItems = [
+    ...resume.experience,
+    {
+      role: resume.education.degree,
+      company: resume.education.school,
+      period: resume.education.period,
+      icon: "school",
+      highlights: [
+        resume.education.gpa ? `GPA ${resume.education.gpa}` : null,
+        resume.education.coursework?.length
+          ? `Relevant Coursework: ${resume.education.coursework.join(", ")}`
+          : null,
+      ].filter(Boolean),
+    },
+  ];
+
   return (
     <FadeSection id="experience" style={{ padding: "80px 0" }}>
       <div className="container">
@@ -256,10 +292,10 @@ function Experience() {
           {/* Timeline */}
           <div>
             <span className="section-label" style={{ color: "#00D4FF" }}>// career path</span>
-            <h2 className="section-heading" style={{ marginBottom: 36 }}>Perjalanan</h2>
+            <h2 className="section-heading" style={{ marginBottom: 36 }}>Career Journey</h2>
             <div style={{ position: "relative", display: "flex", flexDirection: "column", gap: 20 }}>
               <div style={{ position: "absolute", left: 19, top: 0, bottom: 0, width: 1, background: "linear-gradient(to bottom, transparent, rgba(255,255,255,.15) 20%, rgba(255,255,255,.15) 80%, transparent)" }} />
-              {[...resume.experience, { role: resume.education.degree, company: resume.education.school, period: resume.education.period, icon: "school" }].map((e, i) => {
+              {timelineItems.map((e, i) => {
                 const c = i % 2 === 0 ? "#9D4EDD" : "#00D4FF";
                 return (
                   <div key={e.role} style={{ display: "flex", gap: 16, alignItems: "flex-start" }}>
@@ -272,6 +308,13 @@ function Experience() {
                         <span className="mono" style={{ fontSize: 11, color: c, whiteSpace: "nowrap" }}>{e.period}</span>
                       </div>
                       <p style={{ fontSize: 12, color: "#6B7280", marginTop: 3 }}>{e.company}</p>
+                      {e.highlights?.length ? (
+                        <ul style={{ margin: "8px 0 0", paddingLeft: 18, fontSize: 12, lineHeight: 1.6, color: "#9B9B9B" }}>
+                          {e.highlights.map(h => (
+                            <li key={h}>{h}</li>
+                          ))}
+                        </ul>
+                      ) : null}
                     </div>
                   </div>
                 );
@@ -290,7 +333,7 @@ function Experience() {
 
               <div style={{ margin: "28px 0", borderTop: "1px solid rgba(255,255,255,.07)" }} />
 
-              <p style={{ fontWeight: 600, fontSize: 14, color: "#fff", marginBottom: 12, letterSpacing: "-.01em" }}>Filosofi Kode</p>
+              <p style={{ fontWeight: 600, fontSize: 14, color: "#fff", marginBottom: 12, letterSpacing: "-.01em" }}>Code Philosophy</p>
               <div className="glass" style={{ borderRadius: 10, padding: "16px 16px 16px 20px", position: "relative", overflow: "hidden" }}>
                 <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 3, background: "linear-gradient(to bottom, #9D4EDD, #00D4FF)", borderRadius: "3px 0 0 3px" }} />
                 <pre className="mono" style={{ fontSize: 12, lineHeight: 1.8, color: "#9B9B9B", whiteSpace: "pre-wrap" }}>
@@ -307,7 +350,7 @@ function Experience() {
 
               <div style={{ margin: "28px 0", borderTop: "1px solid rgba(255,255,255,.07)" }} />
 
-              <p style={{ fontWeight: 600, fontSize: 14, color: "#fff", marginBottom: 14, letterSpacing: "-.01em" }}>Sertifikasi</p>
+              <p style={{ fontWeight: 600, fontSize: 14, color: "#fff", marginBottom: 14, letterSpacing: "-.01em" }}>Certifications</p>
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {resume.certifications.map(c => (
                   <div key={c} style={{ display: "flex", alignItems: "center", gap: 10 }}>
@@ -316,6 +359,52 @@ function Experience() {
                   </div>
                 ))}
               </div>
+
+              {resume.awards?.length ? (
+                <>
+                  <div style={{ margin: "28px 0", borderTop: "1px solid rgba(255,255,255,.07)" }} />
+                  <p style={{ fontWeight: 600, fontSize: 14, color: "#fff", marginBottom: 14, letterSpacing: "-.01em" }}>Awards & Scholarships</p>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                    {resume.awards.map(a => (
+                      <div key={a} style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                        <span className="material-symbols-outlined" style={{ fontSize: 16, color: "#00D4FF", flexShrink: 0 }}>workspace_premium</span>
+                        <span style={{ fontSize: 13, color: "#9B9B9B", lineHeight: 1.4 }}>{a}</span>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              ) : null}
+
+              {resume.competitions?.length ? (
+                <>
+                  <div style={{ margin: "28px 0", borderTop: "1px solid rgba(255,255,255,.07)" }} />
+                  <p style={{ fontWeight: 600, fontSize: 14, color: "#fff", marginBottom: 14, letterSpacing: "-.01em" }}>Competitions</p>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+                    {resume.competitions.map(c => (
+                      <div key={c.name} className="glass" style={{ borderRadius: 12, padding: "14px 16px" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 8, flexWrap: "wrap" }}>
+                          <p style={{ fontWeight: 600, fontSize: 13, color: "#fff", letterSpacing: "-.01em" }}>{c.name}</p>
+                          <span className="mono" style={{ fontSize: 11, color: "#9D4EDD", whiteSpace: "nowrap" }}>{c.period}</span>
+                        </div>
+                        <p style={{ fontSize: 12, color: "#6B7280", marginTop: 4 }}>{c.result}</p>
+                        {c.highlights?.length ? (
+                          <ul style={{ margin: "8px 0 0", paddingLeft: 18, fontSize: 12, lineHeight: 1.6, color: "#9B9B9B" }}>
+                            {c.highlights.map(h => (
+                              <li key={h}>{h}</li>
+                            ))}
+                          </ul>
+                        ) : null}
+                        {c.link ? (
+                          <a href={c.link} target="_blank" rel="noreferrer" className="mono"
+                            style={{ fontSize: 11, letterSpacing: ".08em", color: "#00D4FF", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 4, marginTop: 10 }}>
+                            View Dashboard <span className="material-symbols-outlined" style={{ fontSize: 14 }}>open_in_new</span>
+                          </a>
+                        ) : null}
+                      </div>
+                    ))}
+                  </div>
+                </>
+              ) : null}
             </div>
           </div>
         </div>
@@ -326,6 +415,27 @@ function Experience() {
 
 /* ── Contact ── */
 function Contact() {
+  const contactItems = [
+    { icon: "location_on", text: resume.contact.location },
+    {
+      icon: "phone",
+      text: resume.contact.phone,
+      href: resume.contact.phone
+        ? `tel:${resume.contact.phone.replace(/\s+/g, "").replace(/-/g, "")}`
+        : null,
+    },
+    {
+      icon: "alternate_email",
+      text: resume.contact.email,
+      href: resume.contact.email ? `mailto:${resume.contact.email}` : null,
+    },
+    {
+      icon: "language",
+      text: resume.contact.website ? resume.contact.website.replace(/^https?:\/\//, "") : null,
+      href: resume.contact.website || null,
+    },
+  ].filter(item => item.text);
+
   return (
     <FadeSection id="contact" style={{ padding: "80px 0 100px" }}>
       <div className="container">
@@ -335,15 +445,15 @@ function Contact() {
           <div style={{ position: "relative", zIndex: 1 }}>
             <span className="section-label" style={{ color: "#9D4EDD" }}>// get in touch</span>
             <h2 style={{ fontFamily: "'Geist','Inter',sans-serif", fontWeight: 700, fontSize: "clamp(2rem,5vw,3.5rem)", letterSpacing: "-.04em", lineHeight: 1.1, color: "#fff", marginBottom: 16 }}>
-              Mari <span className="grad">Berkolaborasi</span>
+              Let's <span className="grad">Collaborate</span>
             </h2>
             <p style={{ fontSize: 16, lineHeight: 1.75, color: "#9B9B9B", maxWidth: 440, margin: "0 auto 36px" }}>
-              Tertarik bekerja sama, berdiskusi tentang data, atau punya project menarik? Jangan ragu menghubungi saya!
+              Interested in collaborating, discussing data, or have an exciting project? Feel free to reach out.
             </p>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center", marginBottom: 36 }}>
               <a href={`mailto:${resume.contact.email}`} className="btn-primary">
                 <span className="material-symbols-outlined" style={{ fontSize: 18 }}>mail</span>
-                Email Saya
+                Email Me
               </a>
               <a href={resume.contact.linkedin} target="_blank" rel="noreferrer" className="btn-ghost glass glow">
                 <span className="material-symbols-outlined" style={{ fontSize: 18 }}>open_in_new</span>
@@ -351,14 +461,21 @@ function Contact() {
               </a>
             </div>
             <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 24 }}>
-              {[
-                { icon: "location_on", text: resume.contact.location },
-                { icon: "phone",       text: resume.contact.phone },
-                { icon: "alternate_email", text: resume.contact.email },
-              ].map(item => (
+              {contactItems.map(item => (
                 <span key={item.text} className="mono" style={{ fontSize: 12, color: "#6B7280", display: "flex", alignItems: "center", gap: 6 }}>
                   <span className="material-symbols-outlined" style={{ fontSize: 15 }}>{item.icon}</span>
-                  {item.text}
+                  {item.href ? (
+                    <a
+                      href={item.href}
+                      target={item.href.startsWith("http") ? "_blank" : undefined}
+                      rel={item.href.startsWith("http") ? "noreferrer" : undefined}
+                      style={{ color: "#6B7280", textDecoration: "none" }}
+                    >
+                      {item.text}
+                    </a>
+                  ) : (
+                    item.text
+                  )}
                 </span>
               ))}
             </div>
