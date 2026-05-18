@@ -501,9 +501,9 @@ function Footer() {
         </div>
         <div style={{ display: "flex", gap: 24 }}>
           {[
-            { label: "GitHub",   href: resume.contact.github },
+            { label: "GitHub", href: resume.contact.github },
             { label: "LinkedIn", href: resume.contact.linkedin },
-            { label: "Email",    href: `mailto:${resume.contact.email}` },
+            { label: "Email", href: `mailto:${resume.contact.email}` },
           ].map(l => (
             <a key={l.label} href={l.href} target={l.href.startsWith("http") ? "_blank" : undefined} rel="noreferrer"
               className="mono"

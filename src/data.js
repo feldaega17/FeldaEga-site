@@ -1,9 +1,9 @@
 export const resume = {
   name: "Felda Ega Fadhila",
   title: "Data & AI Enthusiast",
-  role: "Data Analyst · ML Engineer · ITS Computer Science",
+  role: "Data Scientist · ML Engineer · ITS Computer Science",
   summary:
-    "Fifth-semester Informatics Engineering student at ITS Surabaya focused on Data Science and AI. I turn data into insights through machine learning and advanced analytics for measurable results.",
+    "Sixth-semester Informatics Engineering student at ITS Surabaya focused on Data Science and AI. I turn data into insights through machine learning and advanced analytics for measurable results.",
   contact: {
     email: "feldaega17@gmail.com",
     phone: "+62 822-3541-9215",
