@@ -3,7 +3,7 @@ export const resume = {
   title: "Data & AI Enthusiast",
   role: "Data Scientist · ML Engineer · ITS Computer Science",
   summary:
-    "Sixth-semester Informatics Engineering student at ITS Surabaya focused on Data Science and AI. I turn data into insights through machine learning and advanced analytics for measurable results.",
+    "Final-year Informatics Engineering student at ITS Surabaya focused on Data Science and AI. I turn data into insights through machine learning and advanced analytics for measurable results.",
   contact: {
     email: "feldaega17@gmail.com",
     phone: "+62 822-3541-9215",
@@ -140,10 +140,10 @@ export const resume = {
 };
 
 export const stats = [
-  { value: "4+", label: "Live Projects", color: "#00D4FF" },
-  { value: "4", label: "Certifications", color: "#9D4EDD" },
-  { value: "4", label: "Org Roles", color: "#00D4FF" },
-  { value: "5th", label: "ITS Semester", color: "#9D4EDD" },
+  { num: 4, suffix: "+", label: "Live Projects", color: "var(--blue)" },
+  { num: 4, suffix: "", label: "Certifications", color: "var(--purple)" },
+  { num: 4, suffix: "", label: "Org Roles", color: "var(--blue)" },
+  { num: 7, suffix: "th", label: "ITS Semester", color: "var(--purple)" },
 ];
 
 export const navLinks = [
