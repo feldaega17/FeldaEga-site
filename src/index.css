@@ -87,8 +87,8 @@ body {
 /* ── Liquid glass ── */
 .glass {
   background: linear-gradient(135deg, var(--glass-hi), var(--glass-lo));
-  -webkit-backdrop-filter: blur(22px) saturate(180%);
-  backdrop-filter: blur(22px) saturate(180%);
+  -webkit-backdrop-filter: blur(10px) saturate(150%);
+  backdrop-filter: blur(10px) saturate(150%);
   border: 1px solid var(--glass-border);
   box-shadow:
     inset 0 1px 0 var(--glass-spec),
@@ -96,12 +96,6 @@ body {
     inset 0 -1px 0 var(--glass-shade),
     0 0 0 1px var(--glass-ring),
     0 10px 36px -8px var(--glass-drop);
-}
-
-/* Refraction: Chromium only (html.liquid-ok), others keep plain blur */
-html.liquid-ok .liquid {
-  -webkit-backdrop-filter: url(#liquid-glass) blur(14px) saturate(190%);
-  backdrop-filter: url(#liquid-glass) blur(14px) saturate(190%);
 }
 
 /* ── Hover lift (springy) ── */
@@ -120,7 +114,8 @@ html.liquid-ok .liquid {
 /* ── Aurora background (gives the glass something to bend) ── */
 .aurora { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
 .aurora-blob {
-  position: absolute; border-radius: 50%; filter: blur(90px);
+  position: absolute; border-radius: 50%;
+  background: radial-gradient(closest-side, currentColor, transparent);
   opacity: var(--blob-opacity); will-change: transform;
   animation: drift var(--d, 26s) ease-in-out infinite alternate;
 }
@@ -317,3 +312,14 @@ html.liquid-ok .liquid {
 :root[data-theme="light"] .chip-blue   { background: rgba(2,132,199,.08); color: #075985; }
 :root[data-theme="light"] .chip-purple { background: rgba(123,44,191,.08); color: #5B21B6; }
 :root[data-theme="light"] .spotlight-beam { opacity: .5 !important; }
+
+/* Visible bullets for achievement lists (Tailwind preflight removes them) */
+ul.bullets { list-style: disc; }
+ul.bullets li::marker { color: var(--muted); }
+
+/* Icon font: keep ligature text from widening the box before the font loads */
+.material-symbols-outlined { display: inline-block; width: 1em; overflow: hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora-blob, .pulse, .marquee-track { animation: none !important; }
+}

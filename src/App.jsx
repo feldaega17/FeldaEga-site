@@ -1,8 +1,7 @@
 import { useState, useEffect, useRef } from "react";
-import fotoFelda from "./assets/felda.png";
+import fotoFelda from "./assets/felda.webp";
 import { resume, stats, navLinks } from "./data.js";
-import { motion as Motion, MotionConfig, useScroll, useSpring, useTransform } from "motion/react";
-import { Tilt } from "./components/ui/tilt";
+import { motion as Motion, AnimatePresence, MotionConfig, useScroll, useSpring, useTransform } from "motion/react";
 import { Magnetic } from "./components/ui/magnetic";
 
 /* Hero stagger variants */
@@ -195,8 +194,8 @@ function Hero() {
       <div className="grid-bg" style={{ position: "absolute", inset: 0, pointerEvents: "none" }} />
       <Spotlight fill="var(--purple)" />
       {/* Glow blobs */}
-      <div style={{ position: "absolute", top: "-10%", left: "-5%", width: "45vw", height: "45vw", borderRadius: "50%", background: "rgba(157,78,221,.06)", filter: "blur(120px)", pointerEvents: "none" }} />
-      <div style={{ position: "absolute", bottom: "-10%", right: "-5%", width: "50vw", height: "50vw", borderRadius: "50%", background: "rgba(0,212,255,.05)", filter: "blur(120px)", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", top: "-10%", left: "-5%", width: "45vw", height: "45vw", borderRadius: "50%", background: "radial-gradient(closest-side, rgba(157,78,221,.10), transparent)", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", bottom: "-10%", right: "-5%", width: "50vw", height: "50vw", borderRadius: "50%", background: "radial-gradient(closest-side, rgba(0,212,255,.09), transparent)", pointerEvents: "none" }} />
 
       <div className="container" style={{ position: "relative", zIndex: 1, display: "flex", alignItems: "center", gap: "clamp(40px,8vw,100px)", flexWrap: "wrap", padding: "60px 24px" }}>
         {/* Text side */}
@@ -245,10 +244,10 @@ function Hero() {
           transition={{ type: "spring", stiffness: 70, damping: 14, delay: 0.3 }}
           style={{ flex: "0 0 auto", display: "flex", justifyContent: "center", y: photoY }}>
           <div style={{ position: "relative", width: "clamp(200px,28vw,320px)", height: "clamp(200px,28vw,320px)" }}>
-            <div className="pulse" style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "linear-gradient(135deg,#9D4EDD,#00D4FF)", filter: "blur(32px)", opacity: .45 }} />
+            <div className="pulse" style={{ position: "absolute", inset: "-18%", borderRadius: "50%", background: "radial-gradient(closest-side, rgba(157,78,221,.55) 40%, rgba(0,212,255,.4) 70%, transparent)", opacity: .55 }} />
             <img src={fotoFelda} alt="Felda Ega Fadhila"
               style={{ position: "relative", zIndex: 1, width: "100%", height: "100%", borderRadius: "50%", objectFit: "cover", objectPosition: "top", border: "2px solid var(--border-2)", boxShadow: "0 0 48px rgba(0,212,255,.2)" }}
-              loading="eager"
+              loading="eager" fetchPriority="high" width={375} height={666}
             />
           </div>
         </Motion.div>
@@ -280,68 +279,199 @@ function Stats() {
   );
 }
 
-/* ── Projects ── */
+/* ── Overview / Technical focus ── */
+function Overview() {
+  return (
+    <FadeSection id="overview" style={{ padding: "80px 0" }}>
+      <div className="container">
+        <div style={{ marginBottom: 48 }}>
+          <span className="section-label" style={{ color: "var(--blue)" }}>// overview</span>
+          <h2 className="section-heading">Technical Focus</h2>
+          <p style={{ fontSize: 15, lineHeight: 1.75, color: "var(--text-2)", maxWidth: 560, marginTop: 12 }}>
+            Applied AI, knowledge graphs, backend and data systems, built to ship and measured by results.
+          </p>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))", gap: 20 }}>
+          {resume.focus.map((f, i) => {
+            const purple = i % 2 === 0;
+            const c = purple ? "var(--purple)" : "var(--blue)";
+            return (
+              <SpotlightCard key={f.title} color={purple ? "157,78,221" : "0,212,255"}
+                style={{ borderRadius: 26, padding: 28, display: "flex", flexDirection: "column", gap: 14 }}>
+                <span className="mono" style={{ fontSize: 12, letterSpacing: ".14em", color: c }}>{String(i + 1).padStart(2, "0")}</span>
+                <h3 style={{ fontFamily: "'Geist','Inter',sans-serif", fontWeight: 700, fontSize: 18, letterSpacing: "-.02em", color: "var(--fg)", lineHeight: 1.25 }}>{f.title}</h3>
+                <p style={{ fontSize: 13, lineHeight: 1.7, color: "var(--text-2)" }}>{f.desc}</p>
+                <div style={{ marginTop: "auto", display: "flex", flexWrap: "wrap", gap: 6 }}>
+                  {f.stack.map((t, ti) => <span key={t} className={`chip ${ti % 2 === 0 ? "chip-blue" : "chip-purple"}`}>{t}</span>)}
+                </div>
+              </SpotlightCard>
+            );
+          })}
+        </div>
+      </div>
+    </FadeSection>
+  );
+}
+
+/* ── Project visual (screenshot or placeholder) ── */
+function ProjectVisual({ p, c }) {
+  const [failed, setFailed] = useState(false);
+  const hasImg = p.image && !failed;
+  return (
+    <div style={{
+      position: "relative", borderRadius: 18, overflow: "hidden", aspectRatio: "16 / 10", minHeight: 200,
+      background: `linear-gradient(135deg, color-mix(in srgb, ${c} 26%, transparent), color-mix(in srgb, var(--blue) 12%, transparent))`,
+      border: "1px solid var(--border-2)", display: "flex", alignItems: "center", justifyContent: "center",
+    }}>
+      {hasImg ? (
+        <img src={p.image} alt={`${p.name} screenshot`} loading="lazy" onError={() => setFailed(true)}
+          style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top" }} />
+      ) : (
+        <>
+          <div className="grid-bg" style={{ position: "absolute", inset: 0, opacity: .6, pointerEvents: "none" }} />
+          <span className="material-symbols-outlined" style={{ position: "relative", fontSize: 64, color: c }}>{p.icon}</span>
+        </>
+      )}
+    </div>
+  );
+}
+
+/* ── Projects (case-study carousel) ── */
 function Projects() {
+  const list = resume.projects;
+  const [[idx, dir], setPage] = useState([0, 1]);
+  const go = n => setPage([(n + list.length) % list.length, n > idx ? 1 : -1]);
+  const p = list[idx];
+  const blue = p.accent === "blue";
+  const c = blue ? "var(--blue)" : "var(--purple)";
+  const pad = n => String(n).padStart(2, "0");
+  const arrowBtn = { width: 40, height: 40, borderRadius: 999, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "var(--fg)" };
+
   return (
     <FadeSection id="projects" style={{ padding: "80px 0" }}>
       <div className="container">
-        <div style={{ marginBottom: 48 }}>
-          <span className="section-label" style={{ color: "var(--purple)" }}>// featured work</span>
-          <h2 className="section-heading">Featured Projects</h2>
+        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", flexWrap: "wrap", gap: 20, marginBottom: 32 }}>
+          <div>
+            <span className="section-label" style={{ color: "var(--purple)" }}>// featured work</span>
+            <h2 className="section-heading">Featured Projects</h2>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <span className="mono" style={{ fontSize: 13, letterSpacing: ".1em", color: "var(--muted)" }}>
+              <span style={{ color: "var(--fg)" }}>{pad(idx + 1)}</span> / {pad(list.length)}
+            </span>
+            <button onClick={() => go(idx - 1)} className="glass glow" aria-label="Previous project" style={arrowBtn}>
+              <span className="material-symbols-outlined" style={{ fontSize: 20 }}>arrow_back</span>
+            </button>
+            <button onClick={() => go(idx + 1)} className="glass glow" aria-label="Next project" style={arrowBtn}>
+              <span className="material-symbols-outlined" style={{ fontSize: 20 }}>arrow_forward</span>
+            </button>
+          </div>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))", gap: 20 }}>
-          {resume.projects.map((p, pi) => {
-            const c = p.accent === "blue" ? "var(--blue)" : "var(--purple)";
+
+        <div role="tablist" aria-label="Projects" style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 20 }}>
+          {list.map((t, i) => {
+            const active = i === idx;
             return (
-              <Tilt key={p.name} style={{ display: "flex" }}
-                initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }}
-                transition={{ type: "spring", stiffness: 80, damping: 16, delay: pi * 0.08 }}>
-              <SpotlightCard as="article" color={p.accent === "blue" ? "0,212,255" : "157,78,221"} style={{ flex: 1, borderRadius: 26, padding: "28px", display: "flex", flexDirection: "column", gap: 16 }}>
-                <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
-                  <div style={{ width: 40, height: 40, borderRadius: 14, background: `color-mix(in srgb, ${c} 12%, transparent)`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <span className="material-symbols-outlined" style={{ fontSize: 20, color: c }}>{p.icon}</span>
-                  </div>
-                  <a href={p.link} target="_blank" rel="noreferrer" style={{ color: "var(--muted)", transition: "color .2s", textDecoration: "none" }}
-                    onMouseEnter={e => e.currentTarget.style.color = "var(--fg)"}
-                    onMouseLeave={e => e.currentTarget.style.color = "var(--muted)"}>
-                    <span className="material-symbols-outlined" style={{ fontSize: 18 }}>open_in_new</span>
+              <button key={t.name} role="tab" aria-selected={active} onClick={() => go(i)} className="mono"
+                style={{
+                  padding: "8px 14px", borderRadius: 999, fontSize: 11, letterSpacing: ".06em", cursor: "pointer",
+                  color: active ? "var(--fg)" : "var(--muted)",
+                  background: active ? "linear-gradient(135deg, rgba(157,78,221,.35), rgba(0,212,255,.25))" : "transparent",
+                  border: `1px solid ${active ? "var(--border-2)" : "var(--border)"}`, transition: "color .2s, background .2s",
+                }}>
+                {t.name}
+              </button>
+            );
+          })}
+        </div>
+
+        <AnimatePresence mode="wait" initial={false}>
+          <Motion.div key={idx} initial={{ opacity: 0, x: dir * 40 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: dir * -40 }} transition={{ duration: 0.25 }}>
+            <SpotlightCard as="article" color={blue ? "0,212,255" : "157,78,221"}
+              style={{ borderRadius: 26, padding: "clamp(20px,4vw,36px)", display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: 32, alignItems: "center" }}>
+              <ProjectVisual p={p} c={c} />
+              <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+                {p.period && <p className="mono" style={{ fontSize: 11, color: c, letterSpacing: ".08em" }}>{p.period}</p>}
+                <h3 style={{ fontFamily: "'Geist','Inter',sans-serif", fontWeight: 700, fontSize: "clamp(1.25rem,2.6vw,1.6rem)", letterSpacing: "-.02em", color: "var(--fg)", lineHeight: 1.2 }}>{p.name}</h3>
+                <p style={{ fontSize: 14, lineHeight: 1.7, color: "var(--text-2)" }}>{p.desc}</p>
+                {p.highlights?.length ? (
+                  <ul className="bullets" style={{ paddingLeft: 18, fontSize: 13, lineHeight: 1.65, color: "var(--text-2)", display: "flex", flexDirection: "column", gap: 4 }}>
+                    {p.highlights.map(h => <li key={h}>{h}</li>)}
+                  </ul>
+                ) : null}
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                  {p.tags.map((t, ti) => <span key={t} className={`chip ${ti % 2 === 0 ? "chip-blue" : "chip-purple"}`}>{t}</span>)}
+                </div>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 16 }}>
+                  <a href={p.link} target="_blank" rel="noreferrer" className="mono"
+                    style={{ fontSize: 12, letterSpacing: ".08em", color: c, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 4, transition: "gap .2s" }}
+                    onMouseEnter={e => e.currentTarget.style.gap = "10px"}
+                    onMouseLeave={e => e.currentTarget.style.gap = "4px"}>
+                    View Project <span className="material-symbols-outlined" style={{ fontSize: 16 }}>arrow_forward</span>
                   </a>
-                </div>
-                <div>
-                  <h3 style={{ fontFamily: "'Geist','Inter',sans-serif", fontWeight: 700, fontSize: 17, letterSpacing: "-.02em", color: "var(--fg)", marginBottom: 8 }}>{p.name}</h3>
-                  {p.period && (
-                    <p className="mono" style={{ fontSize: 11, color: "var(--muted)", marginBottom: 8 }}>{p.period}</p>
-                  )}
-                  <p style={{ fontSize: 14, lineHeight: 1.7, color: "var(--text-2)" }}>{p.desc}</p>
-                  {p.highlights?.length ? (
-                    <ul style={{ margin: "12px 0 0", paddingLeft: 18, fontSize: 12, lineHeight: 1.6, color: "var(--text-2)" }}>
-                      {p.highlights.map(h => (
-                        <li key={h}>{h}</li>
-                      ))}
-                    </ul>
-                  ) : null}
-                </div>
-                <div style={{ marginTop: "auto", display: "flex", flexDirection: "column", gap: 12 }}>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                    {p.tags.map((t, ti) => <span key={t} className={`chip ${ti % 2 === 0 ? "chip-blue" : "chip-purple"}`}>{t}</span>)}
-                  </div>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
-                    <a href={p.link} target="_blank" rel="noreferrer" className="mono"
-                      style={{ fontSize: 12, letterSpacing: ".08em", color: c, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 4, transition: "gap .2s" }}
-                      onMouseEnter={e => e.currentTarget.style.gap = "10px"}
-                      onMouseLeave={e => e.currentTarget.style.gap = "4px"}>
-                      View Project <span className="material-symbols-outlined" style={{ fontSize: 16 }}>arrow_forward</span>
+                  {p.repo && (
+                    <a href={p.repo} target="_blank" rel="noreferrer" className="mono"
+                      style={{ fontSize: 12, letterSpacing: ".08em", color: "var(--purple)", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6 }}>
+                      GitHub <span className="material-symbols-outlined" style={{ fontSize: 16 }}>code</span>
                     </a>
-                    {p.repo && (
-                      <a href={p.repo} target="_blank" rel="noreferrer" className="mono"
-                        style={{ fontSize: 12, letterSpacing: ".08em", color: "var(--purple)", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6 }}>
-                        GitHub <span className="material-symbols-outlined" style={{ fontSize: 16 }}>code</span>
-                      </a>
-                    )}
-                  </div>
+                  )}
+                </div>
+              </div>
+            </SpotlightCard>
+          </Motion.div>
+        </AnimatePresence>
+      </div>
+    </FadeSection>
+  );
+}
+
+/* ── Engineering in practice (flow diagrams) ── */
+function Practice() {
+  return (
+    <FadeSection id="practice" style={{ padding: "80px 0" }}>
+      <div className="container">
+        <div style={{ marginBottom: 48 }}>
+          <span className="section-label" style={{ color: "var(--blue)" }}>// under the hood</span>
+          <h2 className="section-heading">Engineering in Practice</h2>
+          <p style={{ fontSize: 15, lineHeight: 1.75, color: "var(--text-2)", maxWidth: 560, marginTop: 12 }}>
+            How the systems I worked on fit together, from raw input to measurable output.
+          </p>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: 20 }}>
+          {resume.practice.map((d, di) => {
+            const purple = di % 2 === 0;
+            const c = purple ? "var(--purple)" : "var(--blue)";
+            return (
+              <SpotlightCard key={d.title} color={purple ? "157,78,221" : "0,212,255"}
+                style={{ borderRadius: 26, padding: 28, display: "flex", flexDirection: "column", gap: 16 }}>
+                <div>
+                  <p className="mono" style={{ fontSize: 11, letterSpacing: ".1em", textTransform: "uppercase", color: c }}>{d.org}</p>
+                  <h3 style={{ fontFamily: "'Geist','Inter',sans-serif", fontWeight: 700, fontSize: 17, letterSpacing: "-.02em", color: "var(--fg)", marginTop: 6 }}>{d.title}</h3>
+                </div>
+                <ol aria-label={`${d.title} flow`} style={{ listStyle: "none", display: "flex", flexDirection: "column", alignItems: "stretch", gap: 4 }}>
+                  {d.steps.map((s, si) => {
+                    const mine = d.mine?.includes(si);
+                    return (
+                      <li key={s} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
+                        <div className="mono" style={{
+                          width: "100%", textAlign: "center", padding: "9px 12px", borderRadius: 12, fontSize: 11.5, lineHeight: 1.4,
+                          color: mine ? "var(--fg)" : "var(--text-2)",
+                          background: mine ? "linear-gradient(135deg, rgba(157,78,221,.28), rgba(0,212,255,.2))" : "var(--card)",
+                          border: `1px solid ${mine ? "var(--border-2)" : "var(--border)"}`,
+                        }}>
+                          {s}
+                          {mine && <span style={{ display: "block", fontSize: 9.5, letterSpacing: ".12em", textTransform: "uppercase", color: c, marginTop: 2 }}>my part</span>}
+                        </div>
+                        {si < d.steps.length - 1 && <span aria-hidden="true" className="mono" style={{ color: "var(--muted)", fontSize: 13, lineHeight: 1 }}>↓</span>}
+                      </li>
+                    );
+                  })}
+                </ol>
+                <div style={{ marginTop: "auto", display: "flex", alignItems: "flex-start", gap: 8, paddingTop: 12, borderTop: "1px solid var(--border)" }}>
+                  <span className="material-symbols-outlined" style={{ fontSize: 16, color: c, flexShrink: 0 }}>trending_up</span>
+                  <span style={{ fontSize: 12.5, lineHeight: 1.5, color: "var(--text-2)" }}>{d.result}</span>
                 </div>
               </SpotlightCard>
-              </Tilt>
             );
           })}
         </div>
@@ -351,25 +481,21 @@ function Projects() {
 }
 
 /* ── Experience + Stack ── */
+const EXP_TABS = [
+  ["professional", "Professional & Industry"],
+  ["campus", "Campus & Leadership"],
+];
+const EXP_LIMIT = 5;
+
 function Experience() {
   const timelineRef = useRef(null);
+  const [tab, setTab] = useState("professional");
+  const [expanded, setExpanded] = useState(false);
   const { scrollYProgress: tlProgress } = useScroll({ target: timelineRef, offset: ["start 75%", "end 55%"] });
   const tlScale = useSpring(tlProgress, { stiffness: 90, damping: 22 });
-  const timelineItems = [
-    ...resume.experience,
-    {
-      role: resume.education.degree,
-      company: resume.education.school,
-      period: resume.education.period,
-      icon: "school",
-      highlights: [
-        resume.education.gpa ? `GPA ${resume.education.gpa}` : null,
-        resume.education.coursework?.length
-          ? `Relevant Coursework: ${resume.education.coursework.join(", ")}`
-          : null,
-      ].filter(Boolean),
-    },
-  ];
+
+  const all = resume.experience.filter(e => e.type === tab);
+  const timelineItems = expanded ? all : all.slice(0, EXP_LIMIT);
 
   return (
     <FadeSection id="experience" style={{ padding: "80px 0" }}>
@@ -378,16 +504,40 @@ function Experience() {
           {/* Timeline */}
           <div>
             <span className="section-label" style={{ color: "var(--blue)" }}>// career path</span>
-            <h2 className="section-heading" style={{ marginBottom: 36 }}>Career Journey</h2>
+            <h2 className="section-heading" style={{ marginBottom: 24 }}>Career Journey</h2>
+
+            <div role="tablist" aria-label="Experience type" style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 28 }}>
+              {EXP_TABS.map(([key, label]) => {
+                const active = tab === key;
+                const count = resume.experience.filter(e => e.type === key).length;
+                return (
+                  <button key={key} role="tab" aria-selected={active}
+                    onClick={() => { setTab(key); setExpanded(false); }} className="mono"
+                    style={{
+                      padding: "8px 16px", borderRadius: 999, fontSize: 11, letterSpacing: ".06em", cursor: "pointer",
+                      color: active ? "var(--fg)" : "var(--muted)",
+                      background: active ? "linear-gradient(135deg, rgba(157,78,221,.35), rgba(0,212,255,.25))" : "transparent",
+                      border: `1px solid ${active ? "var(--border-2)" : "var(--border)"}`, transition: "color .2s, background .2s",
+                    }}>
+                    {label} <span style={{ opacity: .6 }}>({count})</span>
+                  </button>
+                );
+              })}
+            </div>
+
             <div ref={timelineRef} style={{ position: "relative", display: "flex", flexDirection: "column", gap: 20 }}>
-              <div style={{ position: "absolute", left: 19, top: 0, bottom: 0, width: 1, background: "linear-gradient(to bottom, transparent, var(--border-2) 20%, var(--border-2) 80%, transparent)" }} />
-              <Motion.div aria-hidden="true" style={{ position: "absolute", left: 18, top: 0, bottom: 0, width: 3, borderRadius: 3, transformOrigin: "top", scaleY: tlScale, background: "linear-gradient(to bottom, var(--purple), var(--blue))", boxShadow: "0 0 12px var(--hover-glow)" }} />
+              <div style={{ position: "absolute", left: 21.5, top: 0, bottom: 0, width: 1, background: "linear-gradient(to bottom, transparent, var(--border-2) 20%, var(--border-2) 80%, transparent)" }} />
+              <Motion.div aria-hidden="true" style={{ position: "absolute", left: 20.5, top: 0, bottom: 0, width: 3, borderRadius: 3, transformOrigin: "top", scaleY: tlScale, background: "linear-gradient(to bottom, var(--purple), var(--blue))", boxShadow: "0 0 12px var(--hover-glow)" }} />
               {timelineItems.map((e, i) => {
                 const c = i % 2 === 0 ? "var(--purple)" : "var(--blue)";
                 return (
-                  <div key={e.role} style={{ display: "flex", gap: 16, alignItems: "flex-start" }}>
-                    <div style={{ width: 38, height: 38, borderRadius: "50%", background: "var(--surf)", border: "1px solid var(--border-2)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, position: "relative", zIndex: 1, transition: "border-color .3s" }}>
-                      <span className="material-symbols-outlined" style={{ fontSize: 16, color: c }}>{e.icon}</span>
+                  <div key={`${e.role}-${e.company}`} style={{ display: "flex", gap: 16, alignItems: "flex-start" }}>
+                    <div style={{ width: 44, height: 44, borderRadius: e.logo ? 12 : "50%", background: e.logo ? "#fff" : "var(--surf)", border: "1px solid var(--border-2)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, position: "relative", zIndex: 1, padding: e.logo ? 5 : 0, transition: "border-color .3s" }}>
+                      {e.logo ? (
+                        <img src={e.logo} alt={`${e.company} logo`} loading="lazy" decoding="async" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+                      ) : (
+                        <span className="material-symbols-outlined" style={{ fontSize: 18, color: c }}>{e.icon}</span>
+                      )}
                     </div>
                     <SpotlightCard color={i % 2 === 0 ? "157,78,221" : "0,212,255"} style={{ flex: 1, borderRadius: 18, padding: "14px 18px" }}>
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8, flexWrap: "wrap" }}>
@@ -396,7 +546,7 @@ function Experience() {
                       </div>
                       <p style={{ fontSize: 12, color: "var(--muted)", marginTop: 3 }}>{e.company}</p>
                       {e.highlights?.length ? (
-                        <ul style={{ margin: "8px 0 0", paddingLeft: 18, fontSize: 12, lineHeight: 1.6, color: "var(--text-2)" }}>
+                        <ul className="bullets" style={{ margin: "8px 0 0", paddingLeft: 18, fontSize: 12, lineHeight: 1.6, color: "var(--text-2)" }}>
                           {e.highlights.map(h => (
                             <li key={h}>{h}</li>
                           ))}
@@ -407,6 +557,13 @@ function Experience() {
                 );
               })}
             </div>
+
+            {all.length > EXP_LIMIT && (
+              <button onClick={() => setExpanded(x => !x)} className="glass glow mono"
+                style={{ marginTop: 20, padding: "8px 18px", borderRadius: 999, fontSize: 11, letterSpacing: ".08em", color: "var(--text-2)", cursor: "pointer" }}>
+                {expanded ? "Show less" : `Show ${all.length - EXP_LIMIT} more`}
+              </button>
+            )}
           </div>
 
           {/* Stack */}
@@ -450,52 +607,83 @@ function Experience() {
                   </div>
                 ))}
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </FadeSection>
+  );
+}
 
-              {resume.awards?.length ? (
-                <>
-                  <div style={{ margin: "28px 0", borderTop: "1px solid var(--border)" }} />
-                  <p style={{ fontWeight: 600, fontSize: 14, color: "var(--fg)", marginBottom: 14, letterSpacing: "-.01em" }}>Awards & Scholarships</p>
-                  <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                    {resume.awards.map(a => (
-                      <div key={a} style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                        <span className="material-symbols-outlined" style={{ fontSize: 16, color: "var(--blue)", flexShrink: 0 }}>workspace_premium</span>
-                        <span style={{ fontSize: 13, color: "var(--text-2)", lineHeight: 1.4 }}>{a}</span>
-                      </div>
-                    ))}
-                  </div>
-                </>
-              ) : null}
+/* ── Honors, awards & education ── */
+function Honors() {
+  const edu = resume.education;
+  return (
+    <FadeSection id="honors" style={{ padding: "80px 0" }}>
+      <div className="container">
+        <div style={{ marginBottom: 48 }}>
+          <span className="section-label" style={{ color: "var(--purple)" }}>// recognition</span>
+          <h2 className="section-heading">Honors, Awards & Scholarships</h2>
+        </div>
 
-              {resume.competitions?.length ? (
-                <>
-                  <div style={{ margin: "28px 0", borderTop: "1px solid var(--border)" }} />
-                  <p style={{ fontWeight: 600, fontSize: 14, color: "var(--fg)", marginBottom: 14, letterSpacing: "-.01em" }}>Competitions</p>
-                  <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-                    {resume.competitions.map(c => (
-                      <div key={c.name} className="glass" style={{ borderRadius: 18, padding: "14px 16px" }}>
-                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 8, flexWrap: "wrap" }}>
-                          <p style={{ fontWeight: 600, fontSize: 13, color: "var(--fg)", letterSpacing: "-.01em" }}>{c.name}</p>
-                          <span className="mono" style={{ fontSize: 11, color: "var(--purple)", whiteSpace: "nowrap" }}>{c.period}</span>
-                        </div>
-                        <p style={{ fontSize: 12, color: "var(--muted)", marginTop: 4 }}>{c.result}</p>
-                        {c.highlights?.length ? (
-                          <ul style={{ margin: "8px 0 0", paddingLeft: 18, fontSize: 12, lineHeight: 1.6, color: "var(--text-2)" }}>
-                            {c.highlights.map(h => (
-                              <li key={h}>{h}</li>
-                            ))}
-                          </ul>
-                        ) : null}
-                        {c.link ? (
-                          <a href={c.link} target="_blank" rel="noreferrer" className="mono"
-                            style={{ fontSize: 11, letterSpacing: ".08em", color: "var(--blue)", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 4, marginTop: 10 }}>
-                            View Dashboard <span className="material-symbols-outlined" style={{ fontSize: 14 }}>open_in_new</span>
-                          </a>
-                        ) : null}
-                      </div>
-                    ))}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: 20, alignItems: "start" }}>
+          {resume.honors.map((h, i) => {
+            const purple = i % 2 === 0;
+            const c = purple ? "var(--purple)" : "var(--blue)";
+            return (
+              <SpotlightCard key={h.title} as="article" color={purple ? "157,78,221" : "0,212,255"}
+                style={{ borderRadius: 26, padding: 28, display: "flex", flexDirection: "column", gap: 12 }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
+                  <div style={{ width: 40, height: 40, borderRadius: 14, background: `color-mix(in srgb, ${c} 12%, transparent)`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <span className="material-symbols-outlined" style={{ fontSize: 20, color: c }}>{h.icon}</span>
                   </div>
-                </>
-              ) : null}
+                  <span className="mono" style={{ fontSize: 11, color: c, whiteSpace: "nowrap" }}>{h.period}</span>
+                </div>
+                <h3 style={{ fontFamily: "'Geist','Inter',sans-serif", fontWeight: 700, fontSize: 17, letterSpacing: "-.02em", color: "var(--fg)", lineHeight: 1.3 }}>{h.title}</h3>
+                <p className="mono" style={{ fontSize: 11, letterSpacing: ".06em", color: "var(--muted)" }}>{h.org}</p>
+                <p style={{ fontSize: 13, color: "var(--text-2)", lineHeight: 1.5 }}>{h.result}</p>
+                {h.highlights?.length ? (
+                  <ul className="bullets" style={{ paddingLeft: 18, fontSize: 12, lineHeight: 1.6, color: "var(--text-2)" }}>
+                    {h.highlights.map(x => <li key={x}>{x}</li>)}
+                  </ul>
+                ) : null}
+                {h.link ? (
+                  <a href={h.link} target="_blank" rel="noreferrer" className="mono"
+                    style={{ marginTop: "auto", fontSize: 11, letterSpacing: ".08em", color: "var(--blue)", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 4 }}>
+                    {h.linkLabel || "View"} <span className="material-symbols-outlined" style={{ fontSize: 14 }}>open_in_new</span>
+                  </a>
+                ) : null}
+              </SpotlightCard>
+            );
+          })}
+        </div>
+
+        {/* Education */}
+        <div className="glass" style={{ marginTop: 20, borderRadius: 26, padding: 28, display: "flex", flexWrap: "wrap", gap: "20px 40px", alignItems: "center", justifyContent: "space-between" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+            {edu.logo ? (
+              <div style={{ background: "#fff", borderRadius: 12, padding: "6px 10px", border: "1px solid var(--border-2)", flexShrink: 0, display: "flex", alignItems: "center" }}>
+                <img src={edu.logo} alt={`${edu.school} logo`} loading="lazy" decoding="async" style={{ height: 56, width: "auto", display: "block" }} />
+              </div>
+            ) : (
+              <div style={{ width: 44, height: 44, borderRadius: 14, background: "color-mix(in srgb, var(--blue) 12%, transparent)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                <span className="material-symbols-outlined" style={{ fontSize: 22, color: "var(--blue)" }}>school</span>
+              </div>
+            )}
+            <div>
+              <p style={{ fontWeight: 700, fontSize: 16, color: "var(--fg)", letterSpacing: "-.01em" }}>{edu.school}</p>
+              <p style={{ fontSize: 13, color: "var(--text-2)", marginTop: 2 }}>{edu.degree}</p>
+              <p className="mono" style={{ fontSize: 11, color: "var(--muted)", marginTop: 4 }}>{edu.period}</p>
+            </div>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10, alignItems: "flex-start" }}>
+            {edu.gpa ? (
+              <p className="mono" style={{ fontSize: 12, color: "var(--fg)" }}>
+                GPA <span className="grad" style={{ fontWeight: 700, fontSize: 18 }}>{edu.gpa}</span>
+              </p>
+            ) : null}
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+              {edu.coursework?.map((t, ti) => <span key={t} className={`chip ${ti % 2 === 0 ? "chip-blue" : "chip-purple"}`}>{t}</span>)}
             </div>
           </div>
         </div>
@@ -632,27 +820,22 @@ export default function App() {
     <div style={{ minHeight: "100svh", background: "var(--bg)", color: "var(--text)", overflowX: "hidden" }}>
       {/* Aurora background — gives the glass something to refract */}
       <div className="aurora" aria-hidden="true">
-        <div className="aurora-blob" style={{ top: "-12%", left: "-10%", width: "48vw", height: "48vw", background: "var(--purple)", "--d": "28s" }} />
-        <div className="aurora-blob" style={{ top: "30%", right: "-14%", width: "44vw", height: "44vw", background: "var(--blue)", "--d": "34s", animationDelay: "-8s" }} />
-        <div className="aurora-blob" style={{ bottom: "-18%", left: "20%", width: "38vw", height: "38vw", background: "var(--blob-3)", "--d": "40s", animationDelay: "-16s" }} />
+        <div className="aurora-blob" style={{ top: "-12%", left: "-10%", width: "48vw", height: "48vw", color: "var(--purple)", "--d": "28s" }} />
+        <div className="aurora-blob" style={{ top: "30%", right: "-14%", width: "44vw", height: "44vw", color: "var(--blue)", "--d": "34s", animationDelay: "-8s" }} />
+        <div className="aurora-blob" style={{ bottom: "-18%", left: "20%", width: "38vw", height: "38vw", color: "var(--blob-3)", "--d": "40s", animationDelay: "-16s" }} />
       </div>
 
-      {/* Liquid-glass refraction filter (used via .liquid on Chromium) */}
-      <svg width="0" height="0" style={{ position: "absolute" }} aria-hidden="true">
-        <filter id="liquid-glass" x="0%" y="0%" width="100%" height="100%" colorInterpolationFilters="sRGB">
-          <feTurbulence type="fractalNoise" baseFrequency="0.008 0.012" numOctaves="2" seed="7" result="noise" />
-          <feGaussianBlur in="noise" stdDeviation="2" result="soft" />
-          <feDisplacementMap in="SourceGraphic" in2="soft" scale="38" xChannelSelector="R" yChannelSelector="G" />
-        </filter>
-      </svg>
       <div style={{ position: "relative", zIndex: 1 }}>
         <ScrollProgress />
         <Navbar active={active} />
         <main>
           <Hero />
           <Stats />
+          <Overview />
           <Projects />
+          <Practice />
           <Experience />
+          <Honors />
           <Contact />
         </main>
         <Footer />
